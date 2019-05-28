@@ -1,15 +1,20 @@
-#include<stdio.h>
-#include<stdlib.h>
+
+
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "bmp.h"
 
-int main(void)
+int main()
 {
 
 
+    // remember filenames
+
 
     // open input file
-    FILE *inptr = fopen("large.bmp", "r");
+
+    FILE *inptr = fopen("clue.bmp", "r");
     if (inptr == NULL)
     {
         fprintf(stderr, "Could not open.\n");
@@ -17,7 +22,7 @@ int main(void)
     }
 
     // open output file
-    FILE *outptr = fopen("smile.bmp", "w");
+    FILE *outptr = fopen("c.bmp", "w");
     if (outptr == NULL)
     {
         fclose(inptr);
@@ -25,7 +30,7 @@ int main(void)
         return 3;
     }
 
- // read infile's BITMAPFILEHEADER
+    // read infile's BITMAPFILEHEADER
     BITMAPFILEHEADER bf;
     fread(&bf, sizeof(BITMAPFILEHEADER), 1, inptr);
 
@@ -49,15 +54,52 @@ int main(void)
     // write outfile's BITMAPINFOHEADER
     fwrite(&bi, sizeof(BITMAPINFOHEADER), 1, outptr);
 
+    // determine padding for scanlines
+    int padding =  (4 - (bi.biWidth * sizeof(RGBTRIPLE)) % 4) % 4;
+
     // iterate over infile's scanlines
-
+    for (int i = 0, biHeight = abs(bi.biHeight); i < biHeight; i++)
+    {
         // iterate over pixels in scanline
-        // temporary storage
+        for (int j = 0; j < bi.biWidth; j++)
+        {
+            // temporary storage
             RGBTRIPLE triple;
-            fread(&triple, sizeof(RGBTRIPLE), 1, inptr);
-            // read RGB triple from infile
-            fwrite(&triple, sizeof(RGBTRIPLE), 1, outptr);
 
+            // read RGB triple from infile
+            fread(&triple, sizeof(RGBTRIPLE), 1, inptr);
+
+            //remove pixels
+
+                if(triple.rgbtRed == 0xff && triple.rgbtBlue == 0xff && triple.rgbtGreen == 0xff)
+                {
+
+                       triple.rgbtRed =  0x00;
+                       triple.rgbtBlue =  0x00;
+                       triple.rgbtGreen = 0x00;
+
+
+                }
+
+                fwrite(&triple, sizeof(RGBTRIPLE), 1, outptr);
+                  // write RGB triple to outfile
+
+
+
+
+
+
+        }
+
+        // skip over padding, if any
+        fseek(inptr, padding, SEEK_CUR);
+
+        // then add it back (to demonstrate how)
+        for (int k = 0; k < padding; k++)
+        {
+            fputc(0x00, outptr);
+        }
+    }
 
     // close infile
     fclose(inptr);
@@ -67,7 +109,4 @@ int main(void)
 
     // success
     return 0;
-
-
 }
-

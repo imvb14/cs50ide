@@ -1,0 +1,15 @@
+else if((isupper(key[i])  &&isalpha(letter[i]) && islower(letter[i]) ) )
+	          {
+                result= (key[i] + letter[i]+'Z')%26;
+		        result='a'-result ;
+		        printf("%c",result );
+	          	
+	          }
+	          else if(islower(key[i]) && isalpha(letter[i]) &&isupper(letter[i]))
+	          {
+                      
+ 				result= (key[i] + letter[i]-'A'-'a')%26;
+		        result=result +'A';
+		        printf("%c",result );
+
+	          }

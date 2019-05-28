@@ -1,0 +1,10 @@
+RGBTRIPLE pixel;
+RGBTRIPLE line[output_width];
+for (int col = 0; col < input_width; col++)
+{
+    fread(&pixel, sizeof(RGBTRIPLE), 1, input_file);
+    for (int hor_rep = 0; hor_rep < n; hor_rep++)
+    {
+        line[col * n + hor_rep] = pixel;
+    }
+}

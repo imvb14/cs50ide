@@ -6,25 +6,26 @@
 #include<stdlib.h>
 int main(int argc, string argv[])
 {
-      
+
+
       if(argc!=2)
       {
-          printf(" / " );
+          printf(" / \n" );
           return 1;
-          
+
       }
        int key=atoi(argv[1]);
-    
-    
-    
-    string s=GetString();
+
+
+
+    string s=get_string();
     int result;
 
-    
-    
+
+
         for(int i=0,n=strlen(s); i<n; i++ )
          {
-             
+
              if(isalpha (s[i])&&isupper(s[i]))
              {
                  result=(s[i]+key+'A')%26;
@@ -41,10 +42,10 @@ int main(int argc, string argv[])
              {
                  printf("%c",s[i]);
              }
-             
+
          }
-        
-    
+
+
     printf("\n");
     return 0;
 }

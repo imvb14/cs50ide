@@ -1,0 +1,34 @@
+
+      RGBTRIPLE pixel[bi.biWidth *n];
+      int p=0;
+
+        for(int i=0,biHeight=abs(bi.biHeight); i<biHeight; i++)
+        {
+            RGBTRIPLE triple;
+
+            for(int j=0; j<bi.biWidth; j++)
+            {
+                fread(&triple, sizeof(RGBTRIPLE), 1, inptr);
+
+                for(int k=0; k<n; k++)
+                {
+                   pixel[p]=triple;
+
+                   p++;
+                }
+
+            }
+               for(int l=0; l<n; l++)
+               {
+                    fwrite(&pixel, sizeof(RGBTRIPLE), n, outptr);
+
+                    for(int m=0; m<newpadding; m++)
+                    {
+                       fputc(0x00,outptr);
+
+                    }
+               }
+             p=0;
+        }
+
+ fseek(inptr, newpadding, SEEK_CUR);
